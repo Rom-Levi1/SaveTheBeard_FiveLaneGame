@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var timerJob: Job
 
+    var lastHitTime = 0L
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,9 +134,13 @@ class MainActivity : AppCompatActivity() {
             timerJob = lifecycleScope.launch {
                 while (timerOn){
                     gameManager.arrangeObstacles()
-                    if(gameManager.checkCollision()){
-                        toasts()
-                        vibrate()
+                    if (gameManager.checkCollision()) {
+                        val now = System.currentTimeMillis()
+                        if (now - lastHitTime > 1000) {
+                            toasts()
+                            vibrate()
+                            lastHitTime = now
+                        }
                     }
                     updateUI()
                     delay(Constants.Timer.DELAY)
