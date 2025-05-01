@@ -5,6 +5,7 @@ import dev.romle.hw1_app.utilities.Constants
 
 class GameManager(private val lifeCount: Int = 3) {
 
+    var flag = false
 
     var disqualifications: Int = 0
         private set
@@ -14,9 +15,13 @@ class GameManager(private val lifeCount: Int = 3) {
     val isGameOver: Boolean
         get() = disqualifications == lifeCount
 
-    fun checkCollision(){
-        if (DataManager.obstacles[6][playerIndex] == 1)
+    fun checkCollision(): Boolean {
+        if (DataManager.obstacles[6][playerIndex] == 1){
             disqualifications++
+            flag = false
+            return true
+        }
+        return false
     }
 
     fun moveLeft()

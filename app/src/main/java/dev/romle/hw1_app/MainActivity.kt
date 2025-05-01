@@ -1,6 +1,8 @@
 package dev.romle.hw1_app
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
@@ -14,6 +16,7 @@ import com.google.android.material.button.MaterialButton
 import dev.romle.hw1_app.logic.GameManager
 import dev.romle.hw1_app.model.DataManager
 import dev.romle.hw1_app.utilities.Constants
+import dev.romle.hw1_app.utilities.SignalManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -55,7 +58,9 @@ class MainActivity : AppCompatActivity() {
         findViews()
 
         obstacleLayout.post {
-            positionAllRazors()
+            Handler(Looper.getMainLooper()).postDelayed({
+                positionRazors()
+            }, 100)
             positionBeard(gameManager.getPlayerIndex())
         }
 
@@ -127,7 +132,10 @@ class MainActivity : AppCompatActivity() {
             timerJob = lifecycleScope.launch {
                 while (timerOn){
                     gameManager.arrangeObstacles()
-                    gameManager.checkCollision()
+                    if(gameManager.checkCollision()){
+                        toasts()
+                        vibrate()
+                    }
                     updateUI()
                     delay(Constants.Timer.DELAY)
                 }
@@ -143,31 +151,48 @@ class MainActivity : AppCompatActivity() {
                 else
                     obstacleViews[i][j].visibility = View.INVISIBLE
             }
-        if (gameManager.disqualifications != 0 && gameManager.disqualifications <= 3 ) {
+        if (gameManager.disqualifications != 0 && gameManager.disqualifications <= 3 && gameManager.flag == false ) {
             main_IMG_hearts[main_IMG_hearts.size - gameManager.disqualifications]
                 .visibility = View.INVISIBLE
+            updateBeardUI()
+            gameManager.flag = true
         }
 
     }
-    private fun positionAllRazors() {
-        val screenWidth = obstacleLayout.width
-        val screenHeight = obstacleLayout.height
 
-        val rowCount = 8
+    private fun positionRazors() {
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val screenHeight = displayMetrics.heightPixels
+
+        val rowCount = 7
         val laneCount = 3
 
-        val rowHeight = screenHeight * 0.85f / rowCount
-        val laneWidth = screenWidth / laneCount
+        val rowHeight = screenHeight * 0.75f / rowCount
+        val razorSize = resources.getDimensionPixelSize(R.dimen.razor_dimen)
 
-        for (i in 0 until 7) { // Rows 0–6
-            for (j in 0 until laneCount) {
-                val razor = obstacleViews[i][j]
+        val lanePositions = listOf(
+            screenWidth * 1 / 6f,
+            screenWidth * 3 / 6f,
+            screenWidth * 5 / 6f
+        )
 
-                val x = j * laneWidth + (laneWidth - razor.width) / 2
-                val y = i * rowHeight + (rowHeight - razor.height) / 2
+        for (row in 0 until rowCount) {
+            for (lane in 0 until laneCount) {
+                val razor = obstacleViews[row][lane]
 
-                razor.translationX = x.toFloat()
-                razor.translationY = y.toFloat()
+                val params = RelativeLayout.LayoutParams(
+                    razorSize,
+                    razorSize
+                )
+
+                val lanePosition = lanePositions[lane]
+                val marginStart = (lanePosition - razorSize / 2).toInt()
+                val marginTop = (row * rowHeight).toInt()
+
+                params.setMargins(marginStart, marginTop, 0, 0)
+
+                razor.layoutParams = params
             }
         }
     }
@@ -180,17 +205,59 @@ class MainActivity : AppCompatActivity() {
         val laneCount = 3
 
         val rowHeight = screenHeight * 0.85f / rowCount
-        val laneWidth = screenWidth / laneCount
 
-        val x = lane * laneWidth + (laneWidth - IMG_beard1.width) / 2
-        val y = 7 * rowHeight + (rowHeight - IMG_beard1.height) / 2
+        val beardWidth = IMG_beard1.width
+        val beardHeight = IMG_beard1.height
 
-        IMG_beard1.animate()
-            .translationX(x.toFloat())
-            .setDuration(100)
-            .start()
+        val laneCenters = listOf(
+            screenWidth * 1 / 6f,
+            screenWidth * 3 / 6f,
+            screenWidth * 5 / 6f
+        )
 
-        IMG_beard1.translationY = y.toFloat()
+        val lanePosition = laneCenters[lane]
+        val marginStart = (lanePosition - beardWidth / 2).toInt()
+        val marginTop = (7 * rowHeight + (rowHeight - beardHeight) / 2).toInt()
+
+        val params = RelativeLayout.LayoutParams(
+            beardWidth,
+            beardHeight
+        )
+
+        params.setMargins(marginStart, marginTop, 0, 0)
+
+        IMG_beard1.layoutParams = params
     }
 
+    private fun updateBeardUI(){
+        DataManager.imageIndex++
+        IMG_beard1.setImageResource(DataManager.playerImages[DataManager.imageIndex])
+    }
+
+    private fun toasts(){
+
+        if(gameManager.disqualifications == 2) {
+            SignalManager
+                .getInstance()
+                .toast("Leave me alone!!")
+        }
+        else if(gameManager.disqualifications == 3){
+            SignalManager
+                .getInstance()
+                .toast("Game Over!, you need to train")
+        }
+
+        else {
+            SignalManager
+                .getInstance()
+                .toast("Ouch!!")
+        }
+
+    }
+
+    private fun vibrate(){
+        SignalManager
+            .getInstance()
+            .vibrate()
+    }
 }
