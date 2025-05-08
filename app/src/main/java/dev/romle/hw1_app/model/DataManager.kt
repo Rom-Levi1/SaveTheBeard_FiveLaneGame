@@ -4,7 +4,7 @@ import dev.romle.hw1_app.R
 
 class DataManager {
     companion object{
-        var obstacles = Array(7) {IntArray(3)}
+        var obstacles = Array(8) {IntArray(5)}
             private set
 
         var imageIndex = 0

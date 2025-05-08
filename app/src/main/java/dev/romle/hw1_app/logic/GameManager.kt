@@ -10,13 +10,13 @@ class GameManager(private val lifeCount: Int = 3) {
     var disqualifications: Int = 0
         private set
 
-    private var playerIndex = 1
+    private var playerIndex = 2
 
     val isGameOver: Boolean
         get() = disqualifications == lifeCount
 
     fun checkCollision(): Boolean {
-        if (DataManager.obstacles[6][playerIndex] == 1){
+        if (DataManager.obstacles[7][playerIndex] == 1){
             disqualifications++
             flag = false
             return true
@@ -32,24 +32,24 @@ class GameManager(private val lifeCount: Int = 3) {
 
     fun moveRight()
     {
-        if (playerIndex < 2)
+        if (playerIndex < 5)
             playerIndex++
     }
 
     fun getPlayerIndex(): Int = playerIndex
 
     fun newObstacleIndex(): Int{
-        return (0..2).random()
+        return (0..4).random()
     }
 
     fun arrangeObstacles() {
-        for (i in 6 downTo 1)
-            for (j in 0 .. 2)
+        for (i in 7 downTo 1)
+            for (j in 0 .. 4)
                 DataManager.obstacles[i][j] = DataManager.obstacles[i - 1][j]
 
         val newIndex = newObstacleIndex()
 
-        for (i in 0..2)
+        for (i in 0..4)
             if (i == newIndex)
                 DataManager.obstacles[0][i] = 1
             else

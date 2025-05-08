@@ -84,8 +84,8 @@ class MainActivity : AppCompatActivity() {
 
         obstacleLayout = findViewById(R.id.main)
 
-        obstacleViews = Array (7) {row ->
-            Array (3) {col ->
+        obstacleViews = Array (8) {row ->
+            Array (5) {col ->
                 val resId = resources.getIdentifier("IMG_razor${row}_${col}", "id", packageName)
                 findViewById<AppCompatImageView>(resId) // <-- return directly!
             }
@@ -106,8 +106,8 @@ class MainActivity : AppCompatActivity() {
             updateButtonsState()
         }
 
-        for (i in 0..6)
-            for (j in 0..2)
+        for (i in 0..7)
+            for (j in 0..4)
                 obstacleViews[i][j].visibility = View.INVISIBLE
 
 
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateButtonsState() {
         BTN_Left.isEnabled = gameManager.getPlayerIndex() > 0
-        BTN_Right.isEnabled = gameManager.getPlayerIndex() < 2
+        BTN_Right.isEnabled = gameManager.getPlayerIndex() < 4
     }
 
     private fun obstacleTimer() {
@@ -150,8 +150,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        for (i in 0..6)
-            for (j in 0..2) {
+        for (i in 0..7)
+            for (j in 0..4) {
                 if (DataManager.obstacles[i][j] == 1)
                     obstacleViews[i][j].visibility = View.VISIBLE
                 else
@@ -171,16 +171,18 @@ class MainActivity : AppCompatActivity() {
         val screenWidth = displayMetrics.widthPixels
         val screenHeight = displayMetrics.heightPixels
 
-        val rowCount = 7
-        val laneCount = 3
+        val rowCount = 8
+        val laneCount = 5
 
         val rowHeight = screenHeight * 0.75f / rowCount
         val razorSize = resources.getDimensionPixelSize(R.dimen.razor_dimen)
 
         val lanePositions = listOf(
-            screenWidth * 1 / 6f,
-            screenWidth * 3 / 6f,
-            screenWidth * 5 / 6f
+            screenWidth * 1 / 10f,
+            screenWidth * 3 / 10f,
+            screenWidth * 5 / 10f,
+            screenWidth * 7 / 10f,
+            screenWidth * 9 / 10f
         )
 
         for (row in 0 until rowCount) {
@@ -208,7 +210,6 @@ class MainActivity : AppCompatActivity() {
         val screenHeight = obstacleLayout.height
 
         val rowCount = 9
-        val laneCount = 3
 
         val rowHeight = screenHeight * 0.85f / rowCount
 
@@ -216,9 +217,11 @@ class MainActivity : AppCompatActivity() {
         val beardHeight = IMG_beard1.height
 
         val laneCenters = listOf(
-            screenWidth * 1 / 6f,
-            screenWidth * 3 / 6f,
-            screenWidth * 5 / 6f
+            screenWidth * 1 / 10f,
+            screenWidth * 3 / 10f,
+            screenWidth * 5 / 10f,
+            screenWidth * 7 / 10f,
+            screenWidth * 9 / 10f
         )
 
         val lanePosition = laneCenters[lane]

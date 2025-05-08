@@ -3,7 +3,7 @@
     <dimen name="default_margin">30dp</dimen>
     <dimen name="heart_dimens">40dp</dimen>
     <dimen name="heart_margin">10dp</dimen>
-    <dimen name="player_dimen">120dp</dimen>
+    <dimen name="player_dimen">100dp</dimen>
     <dimen name="player_margin">100dp</dimen>
     <dimen name="razor_dimen">80dp</dimen>
     <dimen name="arrow_dimen">100dp</dimen>
