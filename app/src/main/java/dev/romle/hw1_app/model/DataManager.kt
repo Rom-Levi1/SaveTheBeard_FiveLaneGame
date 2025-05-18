@@ -9,6 +9,12 @@ class DataManager {
 
         var imageIndex = 0
 
+        val dropItems = arrayOf(
+            R.drawable.razor,
+            R.drawable.coin,
+            R.drawable.heart,
+        )
+
         val playerImages = arrayOf(
             R.drawable.beard,
             R.drawable.goatee,

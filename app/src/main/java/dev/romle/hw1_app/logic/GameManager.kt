@@ -7,6 +7,8 @@ class GameManager(private val lifeCount: Int = 3) {
 
     var flag = false
 
+    var score : Int = 0
+
     var disqualifications: Int = 0
         private set
 
@@ -17,6 +19,16 @@ class GameManager(private val lifeCount: Int = 3) {
 
     fun checkCollision(): Boolean {
         if (DataManager.obstacles[7][playerIndex] == 1){
+            disqualifications++
+            flag = false
+            return true
+        }
+
+        else if (DataManager.obstacles[7][playerIndex] == 2){
+            score += 10
+        }
+
+        else if (DataManager.obstacles[7][playerIndex] == 1){
             disqualifications++
             flag = false
             return true
@@ -38,22 +50,40 @@ class GameManager(private val lifeCount: Int = 3) {
 
     fun getPlayerIndex(): Int = playerIndex
 
-    fun newObstacleIndex(): Int{
+    fun newDropItemIndex(): Int{
         return (0..4).random()
     }
+
+    fun dropItemIdentity(): Int{
+        return (1..10).random()
+    }
+
 
     fun arrangeObstacles() {
         for (i in 7 downTo 1)
             for (j in 0 .. 4)
                 DataManager.obstacles[i][j] = DataManager.obstacles[i - 1][j]
 
-        val newIndex = newObstacleIndex()
+        val newIndex = newDropItemIndex()
 
         for (i in 0..4)
-            if (i == newIndex)
-                DataManager.obstacles[0][i] = 1
-            else
+            if (i == newIndex) {
+                val identity = dropItemIdentity() % 10
+                //obstacles
+                if (identity <= 6)
+                    DataManager.obstacles[0][i] = 1
+                //coins
+                else if (identity == 8 || identity == 7)
+                    DataManager.obstacles[0][i] = 2
+                //life
+                else if (identity == 9)
+                    DataManager.obstacles[0][i] = 3
+                else
+                    DataManager.obstacles[0][i] = 0
+            }
+            else {
                 DataManager.obstacles[0][i] = 0
+            }
     }
 
 }

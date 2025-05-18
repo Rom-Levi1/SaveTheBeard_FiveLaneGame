@@ -20,6 +20,8 @@ import dev.romle.hw1_app.utilities.SignalManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.core.view.isVisible
+import com.google.android.material.textview.MaterialTextView
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,11 +39,15 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var obstacleLayout: RelativeLayout
 
+    private lateinit var main_LBL_score: MaterialTextView
+
     private var startTime: Long = 0
 
     private var timerOn: Boolean = false
 
     private lateinit var timerJob: Job
+
+    var gainLife: Boolean = false
 
     var lastHitTime = 0L
 
@@ -62,8 +68,9 @@ class MainActivity : AppCompatActivity() {
         obstacleLayout.post {
             Handler(Looper.getMainLooper()).postDelayed({
                 positionRazors()
+                positionBeard(gameManager.getPlayerIndex())
             }, 100)
-            positionBeard(gameManager.getPlayerIndex())
+
         }
 
         initViews()
@@ -73,6 +80,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun findViews() {
+        main_LBL_score = findViewById(R.id.main_LBL_score)
         BTN_Left = findViewById(R.id.BTN_Left)
         BTN_Right = findViewById(R.id.BTN_Right)
         IMG_beard1 = findViewById(R.id.IMG_beard1)
@@ -93,6 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        main_LBL_score.text = "000"
 
         BTN_Left.setOnClickListener{
             gameManager.moveLeft()
@@ -142,6 +151,7 @@ class MainActivity : AppCompatActivity() {
                             lastHitTime = now
                         }
                     }
+                    gameManager.score++
                     updateUI()
                     delay(Constants.Timer.DELAY)
                 }
@@ -150,20 +160,49 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
+        main_LBL_score.text = gameManager.score.toString()
+        updateDropItems()
+        updateLife()
+    }
+
+    private fun updateDropItems(){
         for (i in 0..7)
             for (j in 0..4) {
-                if (DataManager.obstacles[i][j] == 1)
+                if (DataManager.obstacles[i][j] == 1){
+                    obstacleViews[i][j].setImageResource(DataManager.dropItems[0])
                     obstacleViews[i][j].visibility = View.VISIBLE
+                }
+
+                else if (DataManager.obstacles[i][j] == 2){
+                    obstacleViews[i][j].setImageResource(DataManager.dropItems[1])
+                    obstacleViews[i][j].visibility = View.VISIBLE
+                }
+
+                else if (DataManager.obstacles[i][j] == 3){
+                    obstacleViews[i][j].setImageResource(DataManager.dropItems[2])
+                    obstacleViews[i][j].visibility = View.VISIBLE
+                }
+
                 else
                     obstacleViews[i][j].visibility = View.INVISIBLE
             }
-        if (gameManager.disqualifications != 0 && gameManager.disqualifications <= 3 && gameManager.flag == false ) {
-            main_IMG_hearts[main_IMG_hearts.size - gameManager.disqualifications]
-                .visibility = View.INVISIBLE
-            updateBeardUI()
+    }
+
+    private fun updateLife() {
+        if (gameManager.disqualifications > 0 && gameManager.disqualifications <= 3 && gameManager.flag == false ) {
+            if(main_IMG_hearts[main_IMG_hearts.size - gameManager.disqualifications].isVisible) {
+                main_IMG_hearts[main_IMG_hearts.size - gameManager.disqualifications].visibility =
+                    View.INVISIBLE
+                gainLife = false
+            }
+            else {
+                main_IMG_hearts[main_IMG_hearts.size - gameManager.disqualifications].visibility =
+                    View.VISIBLE
+                gainLife = true
+            }
+            updateBeardUI(gainLife)
             gameManager.flag = true
         }
-
     }
 
     private fun positionRazors() {
@@ -238,8 +277,12 @@ class MainActivity : AppCompatActivity() {
         IMG_beard1.layoutParams = params
     }
 
-    private fun updateBeardUI(){
-        DataManager.imageIndex++
+    private fun updateBeardUI(gainLife: Boolean){
+        if (!gainLife)
+            DataManager.imageIndex++
+        else
+            DataManager.imageIndex--
+
         IMG_beard1.setImageResource(DataManager.playerImages[DataManager.imageIndex])
     }
 
