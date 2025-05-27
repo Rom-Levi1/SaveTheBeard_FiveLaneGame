@@ -1,11 +1,13 @@
 package dev.romle.hw1_app.logic
 
 import dev.romle.hw1_app.model.DataManager
+import dev.romle.hw1_app.model.ScoreData
 import dev.romle.hw1_app.utilities.Constants
+import dev.romle.hw1_app.utilities.SharedPreferencesManager
 
 class GameManager(private val lifeCount: Int = 3) {
 
-    var flag = false
+    var flag = true
 
     var score : Int = 0
 
@@ -17,23 +19,24 @@ class GameManager(private val lifeCount: Int = 3) {
     val isGameOver: Boolean
         get() = disqualifications == lifeCount
 
-    fun checkCollision(): Boolean {
+    fun checkCollision(): Int {
         if (DataManager.obstacles[7][playerIndex] == 1){
             disqualifications++
             flag = false
-            return true
+            return 1
         }
 
         else if (DataManager.obstacles[7][playerIndex] == 2){
             score += 10
+            return 2
         }
 
-        else if (DataManager.obstacles[7][playerIndex] == 1){
-            disqualifications++
+        else if (DataManager.obstacles[7][playerIndex] == 3 && disqualifications > 0){
+            disqualifications--
             flag = false
-            return true
+            return 3
         }
-        return false
+        return 0
     }
 
     fun moveLeft()

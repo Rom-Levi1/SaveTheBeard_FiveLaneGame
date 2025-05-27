@@ -17,6 +17,10 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
+    versionCatalogs {
+        create("libs")
+    }
 }
 
 rootProject.name = "HW1_App"

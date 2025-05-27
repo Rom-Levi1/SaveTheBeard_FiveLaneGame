@@ -1,11 +1,9 @@
 package dev.romle.hw1_app
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
-import android.widget.RelativeLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -22,6 +20,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.core.view.isVisible
 import com.google.android.material.textview.MaterialTextView
+import dev.romle.hw1_app.utilities.BackgroundMusicPlayer
+import dev.romle.hw1_app.utilities.SingleSoundPlayer
+import dev.romle.hw1_app.interfaces.TiltCallback
+import dev.romle.hw1_app.model.ScoreData
+import dev.romle.hw1_app.utilities.TiltDetector
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import dev.romle.hw1_app.utilities.SharedPreferencesManager
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,15 +36,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var BTN_Right : MaterialButton
 
-    private lateinit var IMG_beard1 : AppCompatImageView
+    private lateinit var IMG_beards : Array<AppCompatImageView>
 
     private lateinit var main_IMG_hearts :  Array<AppCompatImageView>
 
     private lateinit var gameManager: GameManager
 
     private lateinit var obstacleViews: Array<Array<AppCompatImageView>>
-
-    private lateinit var obstacleLayout: RelativeLayout
 
     private lateinit var main_LBL_score: MaterialTextView
 
@@ -47,9 +52,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var timerJob: Job
 
-    var gainLife: Boolean = false
+    private var gameDelay = Constants.Timer.DELAY_SLOW //default
 
-    var lastHitTime = 0L
+    private var lastHitTime = 0L
+
+    private lateinit var tiltDetector: TiltDetector
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,32 +72,55 @@ class MainActivity : AppCompatActivity() {
 
         findViews()
 
-        obstacleLayout.post {
-            Handler(Looper.getMainLooper()).postDelayed({
-                positionRazors()
-                positionBeard(gameManager.getPlayerIndex())
-            }, 100)
-
-        }
-
         initViews()
 
-        obstacleTimer()
+        initTiltDetector()
+
+        gameLoop()
 
     }
+
+    private fun initTiltDetector() {
+        tiltDetector = TiltDetector(
+            context = this,
+            tiltCallback = object : TiltCallback{
+                override fun tiltX() {
+                    val index = gameManager.getPlayerIndex()
+
+                    if (tiltDetector.tiltCounterX == 1 && index < 4){
+                        gameManager.moveRight()
+                        moveRightUI()
+                    }
+
+                    else if (tiltDetector.tiltCounterX == -1 && index > 0){
+                        gameManager.moveLeft()
+                        moveLeftUI()
+                    }
+                }
+            }
+        )
+    }
+
 
     private fun findViews() {
         main_LBL_score = findViewById(R.id.main_LBL_score)
         BTN_Left = findViewById(R.id.BTN_Left)
         BTN_Right = findViewById(R.id.BTN_Right)
-        IMG_beard1 = findViewById(R.id.IMG_beard1)
+
+        IMG_beards = arrayOf(
+            findViewById(R.id.IMG_beard0),
+            findViewById(R.id.IMG_beard1),
+            findViewById(R.id.IMG_beard2),
+            findViewById(R.id.IMG_beard3),
+            findViewById(R.id.IMG_beard4)
+        )
+
         main_IMG_hearts = arrayOf(
             findViewById(R.id.main_IMG_heart0),
             findViewById(R.id.main_IMG_heart1),
             findViewById(R.id.main_IMG_heart2)
         )
 
-        obstacleLayout = findViewById(R.id.main)
 
         obstacleViews = Array (8) {row ->
             Array (5) {col ->
@@ -101,24 +131,58 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        val bundle: Bundle? = intent.extras
+
+        val sensors = bundle?.getBoolean(Constants.BundleKeys.SENSORS_KEY,false)!!
+        val speed = bundle?.getInt(Constants.BundleKeys.SPEED_KEY,0)
+
+        gameDelay = when (speed){
+            0 -> Constants.Timer.DELAY_SLOW
+            1-> Constants.Timer.DELAY_FAST
+            else -> Constants.Timer.DELAY_SLOW
+        }
+
         main_LBL_score.text = "000"
 
-        BTN_Left.setOnClickListener{
-            gameManager.moveLeft()
-            moveLeftUI()
-            updateButtonsState()
+        initMode(sensors)
+
+        for (i in 0..4) {
+            if (i != 2)
+                IMG_beards[i].visibility = View.INVISIBLE
+            else
+                IMG_beards[i].visibility = View.VISIBLE
         }
 
-        BTN_Right.setOnClickListener {
-            gameManager.moveRight()
-            moveRightUI()
-            updateButtonsState()
-        }
 
         for (i in 0..7)
             for (j in 0..4)
                 obstacleViews[i][j].visibility = View.INVISIBLE
 
+
+    }
+
+
+    //true = sensors , false = buttons
+    private fun initMode(mode: Boolean){
+        if (mode)
+        {
+            BTN_Left.visibility = View.INVISIBLE
+            BTN_Right.visibility = View.INVISIBLE
+
+        }
+        else{
+            BTN_Left.setOnClickListener{
+                gameManager.moveLeft()
+                moveLeftUI()
+                updateButtonsState()
+            }
+
+            BTN_Right.setOnClickListener {
+                gameManager.moveRight()
+                moveRightUI()
+                updateButtonsState()
+            }
+        }
 
     }
 
@@ -135,7 +199,7 @@ class MainActivity : AppCompatActivity() {
         BTN_Right.isEnabled = gameManager.getPlayerIndex() < 4
     }
 
-    private fun obstacleTimer() {
+    private fun gameLoop() {
 
         if (!timerOn) {
             timerOn = true
@@ -143,20 +207,42 @@ class MainActivity : AppCompatActivity() {
             timerJob = lifecycleScope.launch {
                 while (timerOn){
                     gameManager.arrangeObstacles()
-                    if (gameManager.checkCollision()) {
+                    val collisionVal = gameManager.checkCollision()
+                    if (collisionVal == 1) {
                         val now = System.currentTimeMillis()
                         if (now - lastHitTime > 1000) {
                             toasts()
                             vibrate()
+                            var ssp = SingleSoundPlayer(this@MainActivity)
+                            ssp.playSound(R.raw.ohmygod)
                             lastHitTime = now
                         }
                     }
+                    else if (collisionVal == 2){
+                        var ssp = SingleSoundPlayer(this@MainActivity)
+                        ssp.playSound(R.raw.videogamebonus)
+                    }
                     gameManager.score++
                     updateUI()
-                    delay(Constants.Timer.DELAY)
+                   if(gameManager.isGameOver){
+                       timerOn = false
+                       changeActivity()
+                       return@launch
+                    }
+
+                    delay(gameDelay)
                 }
             }
         }
+    }
+
+    private fun changeActivity() {
+        val intent = Intent(this, GameOverActivity::class.java)
+        val bundle = Bundle()
+        bundle.putInt(Constants.BundleKeys.SCORE_KEY,gameManager.score)
+        intent.putExtras(bundle)
+        startActivity(intent)
+        finish()
     }
 
     private fun updateUI() {
@@ -189,92 +275,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateLife() {
-        if (gameManager.disqualifications > 0 && gameManager.disqualifications <= 3 && gameManager.flag == false ) {
-            if(main_IMG_hearts[main_IMG_hearts.size - gameManager.disqualifications].isVisible) {
-                main_IMG_hearts[main_IMG_hearts.size - gameManager.disqualifications].visibility =
-                    View.INVISIBLE
-                gainLife = false
-            }
-            else {
-                main_IMG_hearts[main_IMG_hearts.size - gameManager.disqualifications].visibility =
-                    View.VISIBLE
-                gainLife = true
-            }
-            updateBeardUI(gainLife)
-            gameManager.flag = true
-        }
-    }
+        if (gameManager.flag) return
 
-    private fun positionRazors() {
-        val displayMetrics = resources.displayMetrics
-        val screenWidth = displayMetrics.widthPixels
-        val screenHeight = displayMetrics.heightPixels
+        val disq = gameManager.disqualifications
 
-        val rowCount = 8
-        val laneCount = 5
+        if (disq in 1..3) {
+            val heartIndex = main_IMG_hearts.size - disq
 
-        val rowHeight = screenHeight * 0.75f / rowCount
-        val razorSize = resources.getDimensionPixelSize(R.dimen.razor_dimen)
-
-        val lanePositions = listOf(
-            screenWidth * 1 / 10f,
-            screenWidth * 3 / 10f,
-            screenWidth * 5 / 10f,
-            screenWidth * 7 / 10f,
-            screenWidth * 9 / 10f
-        )
-
-        for (row in 0 until rowCount) {
-            for (lane in 0 until laneCount) {
-                val razor = obstacleViews[row][lane]
-
-                val params = RelativeLayout.LayoutParams(
-                    razorSize,
-                    razorSize
-                )
-
-                val lanePosition = lanePositions[lane]
-                val marginStart = (lanePosition - razorSize / 2).toInt()
-                val marginTop = (row * rowHeight).toInt()
-
-                params.setMargins(marginStart, marginTop, 0, 0)
-
-                razor.layoutParams = params
+            if (main_IMG_hearts[heartIndex].isVisible) {
+                // Lose life
+                main_IMG_hearts[heartIndex].visibility = View.INVISIBLE
+                updateBeardUI(false)
+            } else {
+                // Gain life back
+                main_IMG_hearts[heartIndex - 1].visibility = View.VISIBLE
+                updateBeardUI(true)
             }
         }
+
+        if (disq == 0) {
+            // Full health restoration (maybe from a pickup)
+            for (heart in main_IMG_hearts) heart.visibility = View.VISIBLE
+            updateBeardUI(true)
+        }
+
+        gameManager.flag = true
     }
+
+
 
     private fun positionBeard(lane: Int) {
-        val screenWidth = obstacleLayout.width
-        val screenHeight = obstacleLayout.height
+        for (i in 0..4){
+            if (i != lane)
+                IMG_beards[i].visibility = View.INVISIBLE
+            else
+                IMG_beards[i].visibility = View.VISIBLE
+        }
 
-        val rowCount = 9
-
-        val rowHeight = screenHeight * 0.85f / rowCount
-
-        val beardWidth = IMG_beard1.width
-        val beardHeight = IMG_beard1.height
-
-        val laneCenters = listOf(
-            screenWidth * 1 / 10f,
-            screenWidth * 3 / 10f,
-            screenWidth * 5 / 10f,
-            screenWidth * 7 / 10f,
-            screenWidth * 9 / 10f
-        )
-
-        val lanePosition = laneCenters[lane]
-        val marginStart = (lanePosition - beardWidth / 2).toInt()
-        val marginTop = (7 * rowHeight + (rowHeight - beardHeight) / 2).toInt()
-
-        val params = RelativeLayout.LayoutParams(
-            beardWidth,
-            beardHeight
-        )
-
-        params.setMargins(marginStart, marginTop, 0, 0)
-
-        IMG_beard1.layoutParams = params
     }
 
     private fun updateBeardUI(gainLife: Boolean){
@@ -283,7 +320,10 @@ class MainActivity : AppCompatActivity() {
         else
             DataManager.imageIndex--
 
-        IMG_beard1.setImageResource(DataManager.playerImages[DataManager.imageIndex])
+        for (i in 0..4) {
+            findViewById<AppCompatImageView>(DataManager.beardImageIds[i])
+                .setImageResource(DataManager.playerImages[DataManager.imageIndex])
+        }
     }
 
     private fun toasts(){
@@ -311,5 +351,18 @@ class MainActivity : AppCompatActivity() {
         SignalManager
             .getInstance()
             .vibrate()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        tiltDetector.start()
+        BackgroundMusicPlayer.getInstance().playMusic()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        tiltDetector.stop()
+        BackgroundMusicPlayer.getInstance().pauseMusic()
     }
 }

@@ -22,5 +22,14 @@ class DataManager {
             R.drawable.shaved
         )
 
+        val beardImageIds = arrayOf(
+            R.id.IMG_beard0,
+            R.id.IMG_beard1,
+            R.id.IMG_beard2,
+            R.id.IMG_beard3,
+            R.id.IMG_beard4
+        )
+
+        var scoreDataList: MutableList<ScoreData?> = MutableList(10) { null }
     }
 }

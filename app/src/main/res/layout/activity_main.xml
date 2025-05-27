@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/blue">
+    android:background="@color/purple200">
 
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -14,20 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/barber_shop"
-        android:scaleType="centerCrop"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_beard1"
-        android:layout_width="@dimen/player_dimen"
-        android:layout_height="@dimen/player_dimen"
-        app:srcCompat="@drawable/beard"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         />
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/LNR_hearts_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/default_margin">
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/main_IMG_heart0"
@@ -63,6 +60,440 @@
         android:layout_margin="@dimen/score_margin"
         tools:text="000" />
 
+    <LinearLayout
+        android:id="@+id/LNR_matrix"
+        android:layout_below="@+id/LNR_hearts_line"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@id/BTN_Left"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/LNR_line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor0_0"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor0_1"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor0_2"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor0_3"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor0_4"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LNR_line2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/obstacle_margin"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor1_0"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor1_1"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor1_2"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor1_3"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor1_4"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LNR_line3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/obstacle_margin"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor2_0"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor2_1"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor2_2"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor2_3"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor2_4"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LNR_line4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/obstacle_margin"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor3_0"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor3_1"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor3_2"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor3_3"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor3_4"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LNR_line5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/obstacle_margin"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor4_0"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor4_1"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor4_2"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor4_3"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor4_4"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LNR_line6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/obstacle_margin"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor5_0"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor5_1"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor5_2"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor5_3"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor5_4"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/LNR_line7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/obstacle_margin"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor6_0"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor6_1"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor6_2"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor6_3"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/IMG_razor6_4"
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="@dimen/razor_dimen"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/razor" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/LNR_line8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/obstacle_margin"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_razor7_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/razor_dimen"
+                    app:srcCompat="@drawable/razor" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_beard0"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/player_dimen"
+                    app:srcCompat="@drawable/beard"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_razor7_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/razor_dimen"
+                    app:srcCompat="@drawable/razor" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_beard1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/player_dimen"
+                    app:srcCompat="@drawable/beard"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_razor7_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/razor_dimen"
+                    app:srcCompat="@drawable/razor" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_beard2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/player_dimen"
+                    app:srcCompat="@drawable/beard"
+
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_razor7_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/razor_dimen"
+                    app:srcCompat="@drawable/razor" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_beard3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/player_dimen"
+                    app:srcCompat="@drawable/beard"
+
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/zero_margin"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_razor7_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/razor_dimen"
+                    app:srcCompat="@drawable/razor" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/IMG_beard4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/player_dimen"
+                    app:srcCompat="@drawable/beard"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/BTN_Left"
@@ -74,11 +505,10 @@
         android:layout_alignParentLeft="true"
         android:layoutDirection="ltr"
         app:iconTint="@color/arrow_color"
-        android:backgroundTint="@color/purple"
-        android:layout_marginBottom="40dp"
-        android:layout_marginStart="60dp"
-        android:padding="10dp"
-        android:insetTop="0dp"
+        android:backgroundTint="@color/purple200"
+        android:layout_marginStart="@dimen/player_dimen"
+        android:padding="@dimen/padding_dimen"
+        android:insetTop="@dimen/zero_margin"
         android:contentDescription="Move Left"
 
         />
@@ -93,317 +523,12 @@
         android:layout_alignParentRight="true"
         android:layoutDirection="ltr"
         app:iconTint="@color/arrow_color"
-        android:backgroundTint="@color/purple"
-        android:layout_marginBottom="40dp"
-        android:layout_marginEnd="60dp"
-        android:padding="10dp"
-        android:insetTop="0dp"
+        android:backgroundTint="@color/purple200"
+        android:layout_marginEnd="@dimen/player_dimen"
+        android:padding="@dimen/padding_dimen"
+        android:insetTop="@dimen/zero_margin"
         android:contentDescription="Move Right"
 
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor0_0"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor0_1"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor0_2"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor0_3"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor0_4"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor1_0"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor1_1"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor1_2"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor1_3"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor1_4"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor2_0"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor2_1"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor2_2"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor2_3"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor2_4"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor3_0"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor3_1"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor3_2"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor3_3"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor3_4"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor4_0"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor4_1"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor4_2"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor4_3"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor4_4"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor5_0"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor5_1"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor5_2"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor5_3"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor5_4"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor6_0"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor6_1"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-
-         />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor6_2"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor6_3"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor6_4"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor7_0"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor7_1"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor7_2"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor7_3"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-
-        />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IMG_razor7_4"
-        android:layout_width="@dimen/razor_dimen"
-        android:layout_height="@dimen/razor_dimen"
-        app:srcCompat="@drawable/razor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         />
 
 

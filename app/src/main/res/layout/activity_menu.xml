@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple"
+    android:background="@color/purple200"
     tools:context=".MenuActivity">
 
 
@@ -72,6 +72,14 @@
             android:text="Sensor"
             android:layout_marginBottom="5dp"
             />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BTN_scoreboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scoreboard"
+            android:layout_marginBottom="5dp"
+            />
+
     </LinearLayout>
 
 
