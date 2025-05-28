@@ -1,19 +1,22 @@
 package dev.romle.hw1_app
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.button.MaterialButton
 import dev.romle.hw1_app.interfaces.HighScoreClicked
 import dev.romle.hw1_app.model.ScoreData
 import dev.romle.hw1_app.ui.MapFragment
 import dev.romle.hw1_app.ui.ScoreFragment
+import dev.romle.hw1_app.utilities.Constants
 import dev.romle.hw1_app.utilities.SignalManager
-private val LOCATION_PERMISSION_REQUEST_CODE = 1002
 
 
 class ScoreActivity : AppCompatActivity() {
@@ -25,6 +28,9 @@ class ScoreActivity : AppCompatActivity() {
     private lateinit var mapFragment : MapFragment
 
     private lateinit var scoreFragment: ScoreFragment
+
+    private lateinit var return_to_menu_BTN : MaterialButton
+
 
 
 
@@ -59,7 +65,7 @@ class ScoreActivity : AppCompatActivity() {
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
             ),
-            LOCATION_PERMISSION_REQUEST_CODE
+            Constants.PremissionCode.LOCATION_PERMISSION_REQUEST_CODE
         )
     }
 
@@ -70,7 +76,7 @@ class ScoreActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE &&
+        if (requestCode == Constants.PremissionCode.LOCATION_PERMISSION_REQUEST_CODE &&
             grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
             initViews()
         } else {
@@ -80,6 +86,11 @@ class ScoreActivity : AppCompatActivity() {
 
 
     private fun initViews() {
+
+        return_to_menu_BTN.setOnClickListener(){
+            startActivity(Intent(this, MenuActivity::class.java))
+            finish()
+        }
         mapFragment = MapFragment()
 
         supportFragmentManager
@@ -105,6 +116,7 @@ class ScoreActivity : AppCompatActivity() {
     }
 
     private fun findViews() {
+        return_to_menu_BTN = findViewById(R.id.return_to_menu_BTN)
         main_FRAME_map = findViewById(R.id.main_FRAME_map)
         main_FRAME_highScores = findViewById(R.id.main_FRAME_highScores)
     }

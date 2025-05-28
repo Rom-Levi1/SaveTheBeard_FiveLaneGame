@@ -15,4 +15,9 @@ class Constants {
     object SP_KEYS{
         const val SCORE_KEY = "score_data_list"
     }
+
+    object PremissionCode{
+        const val LOCATION_PERMISSION_REQUEST_CODE = 1002
+
+    }
 }

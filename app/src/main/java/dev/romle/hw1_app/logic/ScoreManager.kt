@@ -13,6 +13,7 @@ object ScoreManager {
     }
 
     fun addScore(newScore: ScoreData) {
+        //SharedPreferencesManager.getInstance().clearScores()
         val scores = getScores().toMutableList()
 
         if (scores.size < 10){

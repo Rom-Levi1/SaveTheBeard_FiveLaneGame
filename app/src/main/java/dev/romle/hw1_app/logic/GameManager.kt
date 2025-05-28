@@ -1,11 +1,10 @@
 package dev.romle.hw1_app.logic
 
 import dev.romle.hw1_app.model.DataManager
-import dev.romle.hw1_app.model.ScoreData
-import dev.romle.hw1_app.utilities.Constants
-import dev.romle.hw1_app.utilities.SharedPreferencesManager
+
 
 class GameManager(private val lifeCount: Int = 3) {
+
 
     var flag = true
 
@@ -88,5 +87,6 @@ class GameManager(private val lifeCount: Int = 3) {
                 DataManager.obstacles[0][i] = 0
             }
     }
+
 
 }

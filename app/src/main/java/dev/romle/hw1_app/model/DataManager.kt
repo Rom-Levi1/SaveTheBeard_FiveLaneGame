@@ -30,6 +30,9 @@ class DataManager {
             R.id.IMG_beard4
         )
 
-        var scoreDataList: MutableList<ScoreData?> = MutableList(10) { null }
+        fun resetDataManager(){
+            imageIndex = 0
+            obstacles = Array(8) { IntArray(5) }
+        }
     }
 }

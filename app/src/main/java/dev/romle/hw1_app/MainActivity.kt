@@ -1,7 +1,6 @@
 package dev.romle.hw1_app
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -23,11 +22,8 @@ import com.google.android.material.textview.MaterialTextView
 import dev.romle.hw1_app.utilities.BackgroundMusicPlayer
 import dev.romle.hw1_app.utilities.SingleSoundPlayer
 import dev.romle.hw1_app.interfaces.TiltCallback
-import dev.romle.hw1_app.model.ScoreData
 import dev.romle.hw1_app.utilities.TiltDetector
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import dev.romle.hw1_app.utilities.SharedPreferencesManager
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -70,6 +66,8 @@ class MainActivity : AppCompatActivity() {
         }
         gameManager = GameManager()
 
+        DataManager.resetDataManager()
+
         findViews()
 
         initViews()
@@ -87,14 +85,14 @@ class MainActivity : AppCompatActivity() {
                 override fun tiltX() {
                     val index = gameManager.getPlayerIndex()
 
-                    if (tiltDetector.tiltCounterX == 1 && index < 4){
-                        gameManager.moveRight()
-                        moveRightUI()
-                    }
-
-                    else if (tiltDetector.tiltCounterX == -1 && index > 0){
+                    if (tiltDetector.tiltCounterX == 1 && index > 0){
                         gameManager.moveLeft()
                         moveLeftUI()
+                    }
+
+                    else if (tiltDetector.tiltCounterX == -1 && index < 4){
+                        gameManager.moveRight()
+                        moveRightUI()
                     }
                 }
             }
@@ -134,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         val bundle: Bundle? = intent.extras
 
         val sensors = bundle?.getBoolean(Constants.BundleKeys.SENSORS_KEY,false)!!
-        val speed = bundle?.getInt(Constants.BundleKeys.SPEED_KEY,0)
+        val speed = bundle.getInt(Constants.BundleKeys.SPEED_KEY,0)
 
         gameDelay = when (speed){
             0 -> Constants.Timer.DELAY_SLOW
@@ -356,13 +354,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        tiltDetector.start()
+
+        val bundle: Bundle? = intent.extras
+        val sensors = bundle?.getBoolean(Constants.BundleKeys.SENSORS_KEY,false)!!
+        if (sensors) {
+            tiltDetector.start()
+        }
         BackgroundMusicPlayer.getInstance().playMusic()
     }
 
     override fun onPause() {
         super.onPause()
-        tiltDetector.stop()
+        val bundle: Bundle? = intent.extras
+        val sensors = bundle?.getBoolean(Constants.BundleKeys.SENSORS_KEY,false)!!
+        if (sensors) {
+            tiltDetector.stop()
+        }
         BackgroundMusicPlayer.getInstance().pauseMusic()
     }
 }

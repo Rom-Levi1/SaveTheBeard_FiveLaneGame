@@ -6,8 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ScoreActivity">
-
+    tools:context=".ScoreActivity"
+    android:background="@color/purple600">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/return_to_menu_BTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EXIT" />
         <FrameLayout
             android:id="@+id/main_FRAME_highScores"
             android:layout_width="match_parent"
@@ -15,7 +20,9 @@
             android:layout_weight="0.4"
             android:background="@color/purple300"
             android:padding="@dimen/default_padding"
-            />
+            >
+
+        </FrameLayout>
 
 
         <FrameLayout
@@ -24,6 +31,8 @@
             android:layout_height="0dp"
             android:layout_weight="0.6"
             android:padding="@dimen/default_padding"
-            />
+            >
+
+        </FrameLayout>
 
 </LinearLayout>
