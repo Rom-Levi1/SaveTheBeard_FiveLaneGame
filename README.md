@@ -34,4 +34,15 @@ High score saving system (SharedPreferences)
 
 🎨 Vector & PNG assets
 
-🔧 RelativeLayout 
+🔧 RelativeLayout, LinearLayout, ScrollView
+
+<img src="screenshot0.png" width="45%"/>
+<img src="screenshot1.png" width="45%"/>
+
+<br/>
+
+<img src="screenshot2.png" width="45%"/>
+<img src="screenshot3.png" width="45%"/>
+
+
+
