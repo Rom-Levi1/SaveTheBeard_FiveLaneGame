@@ -12,7 +12,9 @@
             android:id="@+id/return_to_menu_BTN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="EXIT" />
+            android:layout_gravity="left"
+            android:text="EXIT"
+            />
         <FrameLayout
             android:id="@+id/main_FRAME_highScores"
             android:layout_width="match_parent"

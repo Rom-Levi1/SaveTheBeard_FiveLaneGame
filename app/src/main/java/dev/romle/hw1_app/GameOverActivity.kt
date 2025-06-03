@@ -27,6 +27,8 @@ import dev.romle.hw1_app.model.ScoreData
 class GameOverActivity : AppCompatActivity() {
 
     private lateinit var BTN_exitButton: MaterialButton
+    private var hasAskedName = false
+
 
     val permissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -101,15 +103,13 @@ class GameOverActivity : AppCompatActivity() {
 
         if (!fineGranted || !coarseGranted) {
             if (!shouldShow) {
-                // This could mean: 1st ask ever, or "Don't ask again", or "Ask every time"
                 ActivityCompat.requestPermissions(
                     this,
                     permissions,
                     Constants.PremissionCode.LOCATION_PERMISSION_REQUEST_CODE
                 )
             } else {
-                // Optional: show rationale dialog if needed
-                SignalManager.getInstance().toast("We need your location to show the map.")
+                SignalManager.getInstance().toast("Location is needed to show the map.")
             }
         } else {
             handleScoreEntry()
@@ -117,6 +117,11 @@ class GameOverActivity : AppCompatActivity() {
     }
 
     private fun askPlayerName(onNameEntered: (String) -> Unit) {
+
+        if (hasAskedName || isFinishing || isDestroyed) return
+
+        hasAskedName = true
+
         val input = EditText(this).apply {
             hint = "Enter your name"
         }
@@ -158,25 +163,6 @@ class GameOverActivity : AppCompatActivity() {
                 callback(0.0, 0.0)
         }.addOnFailureListener {
             callback(0.0, 0.0)
-        }
-    }
-
-
-
-    private fun requestLocationPermission() {
-
-        val fine =
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val rationale = ActivityCompat.shouldShowRequestPermissionRationale(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-
-        if (fine != PackageManager.PERMISSION_GRANTED) {
-            Log.d("PERMISSION", "No permission. Rationale=$rationale")
-            ActivityCompat.requestPermissions(this, permissions, 1001)
-        }
-        else{    Log.d("PERMISSION", "Permission already granted")
         }
     }
 

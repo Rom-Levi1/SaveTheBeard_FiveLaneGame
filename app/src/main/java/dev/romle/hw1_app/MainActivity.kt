@@ -2,6 +2,7 @@ package dev.romle.hw1_app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -81,23 +82,44 @@ class MainActivity : AppCompatActivity() {
     private fun initTiltDetector() {
         tiltDetector = TiltDetector(
             context = this,
-            tiltCallback = object : TiltCallback{
-                override fun tiltX() {
+            tiltCallback = object : TiltCallback {
+                override fun tiltXRight() {
                     val index = gameManager.getPlayerIndex()
-
-                    if (tiltDetector.tiltCounterX == 1 && index > 0){
-                        gameManager.moveLeft()
-                        moveLeftUI()
-                    }
-
-                    else if (tiltDetector.tiltCounterX == -1 && index < 4){
+                    if (index < 4) {
                         gameManager.moveRight()
                         moveRightUI()
                     }
                 }
+
+                override fun tiltXLeft() {
+                    val index = gameManager.getPlayerIndex()
+                    if (index > 0) {
+                        gameManager.moveLeft()
+                        moveLeftUI()
+                    }
+                }
+
+                override fun tiltForward() {
+                    if (gameDelay != Constants.Timer.DELAY_FAST)
+                    {                    gameDelay = Constants.Timer.DELAY_FAST
+                        SignalManager.getInstance().toast("Speeding up!")
+                        Log.d("Tilt", "Tilt forward: Speeding up! Delay = $gameDelay")
+                    }
+                }
+
+                override fun tiltBackward() {
+                    if (gameDelay != Constants.Timer.DELAY_SLOW)
+                    {
+                        gameDelay = Constants.Timer.DELAY_SLOW
+                        SignalManager.getInstance().toast("Slowing down!")
+                        Log.d("Tilt", "Tilt backward: Slowing down! Delay = $gameDelay")
+                    }
+                }
             }
         )
+
     }
+
 
 
     private fun findViews() {
@@ -123,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         obstacleViews = Array (8) {row ->
             Array (5) {col ->
                 val resId = resources.getIdentifier("IMG_razor${row}_${col}", "id", packageName)
-                findViewById<AppCompatImageView>(resId) // <-- return directly!
+                findViewById<AppCompatImageView>(resId)
             }
         }
     }
@@ -223,15 +245,20 @@ class MainActivity : AppCompatActivity() {
                     gameManager.score++
                     updateUI()
                    if(gameManager.isGameOver){
-                       timerOn = false
+                       stopGameLoop()
                        changeActivity()
                        return@launch
                     }
-
+                    Log.d("GameLoop", "Delaying for $gameDelay ms")
                     delay(gameDelay)
                 }
             }
         }
+    }
+
+    private fun stopGameLoop() {
+        timerJob.cancel()
+        timerOn = false
     }
 
     private fun changeActivity() {
@@ -360,6 +387,7 @@ class MainActivity : AppCompatActivity() {
         if (sensors) {
             tiltDetector.start()
         }
+        gameLoop()
         BackgroundMusicPlayer.getInstance().playMusic()
     }
 
@@ -370,6 +398,7 @@ class MainActivity : AppCompatActivity() {
         if (sensors) {
             tiltDetector.stop()
         }
+        stopGameLoop()
         BackgroundMusicPlayer.getInstance().pauseMusic()
     }
 }

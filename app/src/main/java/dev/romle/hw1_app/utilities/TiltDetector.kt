@@ -18,9 +18,6 @@ class TiltDetector(context: Context, private var tiltCallback: TiltCallback?) {
 
     private lateinit var sensorEventListener: SensorEventListener
 
-    var tiltCounterX: Int = 0 // no tilt
-        private set
-
     private var timestamp: Long = 0L
 
     init {
@@ -31,7 +28,8 @@ class TiltDetector(context: Context, private var tiltCallback: TiltCallback?) {
         sensorEventListener = object : SensorEventListener {
             override fun onSensorChanged(event: SensorEvent) {
                 val x = event.values[0]
-                calculateTilt(x)
+                val y = event.values[1]
+                calculateTilt(x,y)
             }
 
             override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -41,22 +39,21 @@ class TiltDetector(context: Context, private var tiltCallback: TiltCallback?) {
         }
     }
 
-    private fun calculateTilt(x: Float) {
+    private fun calculateTilt(x: Float, y: Float) {
         if (System.currentTimeMillis() - timestamp >= 500) {
             timestamp = System.currentTimeMillis()
-            if (x >= 3.0) {
-                tiltCounterX = 1 // tilt right
-                tiltCallback?.tiltX()
+            if (x > 3.0) {
+                tiltCallback?.tiltXLeft()
             }
-            else if (x <= -3.0){
-                tiltCounterX = -1 // tilt left
-                tiltCallback?.tiltX()
+            else if (x < -3.0){
+                tiltCallback?.tiltXRight()
             }
-            else {
-                tiltCounterX = 0 // no tilt
-                tiltCallback?.tiltX()
+            if (y < -0.2){
+                tiltCallback?.tiltForward()
             }
-
+            else if (y > 0.2){
+                tiltCallback?.tiltBackward()
+            }
         }
     }
 

@@ -54,21 +54,12 @@ class MapFragment : Fragment() {
     }
 
     fun zoom(scoreData: ScoreData){
-//        map_LBL_title.text = buildString {
-//            append(scoreData.PlayerName)
-//            append("\t" + scoreData.score)
-//            append("\n📍\n")
-//            append(scoreData.latitude)
-//            append(",\n")
-//            append(scoreData.longitude)
-//        }
-        //moving location
         val pos = LatLng(scoreData.latitude, scoreData.longitude)
 
         googleMap?.let {
-            it.clear() //  remove previous markers
+            it.clear()
             it.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 12f)) //zooming
-            it.addMarker(MarkerOptions().position(pos).title("${scoreData.playerName} (${scoreData.score})")) //
+            it.addMarker(MarkerOptions().position(pos).title("${scoreData.playerName} (${scoreData.score})"))
         }
     }
 
