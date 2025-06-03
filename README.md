@@ -1,16 +1,37 @@
-# 🧔 SaveTheBeard: Three Lane Dodger
+🧔 SaveTheBeard: Five Lane Dodger
+An Android arcade game where your only mission is clear: Dodge the razors. Save the beard. 🪒💥
 
-An Android arcade game where you dodge falling razors and try to protect your glorious beard. 🪒
+🎮 Gameplay
+👈👉 Swipe or tilt to switch between 3 lanes
 
-## 🎮 Gameplay
-- 3-lane movement
-- Avoid falling razors
-- Lose hearts when hit
-- Character face updates when taking damage
-- Game over when all lives are lost
+⚠️ Avoid falling razors
 
-## 🛠️ Built With
-- Kotlin
-- Android Studio
-- Vector & PNG assets
-- RelativeLayout magic ✨
+💊 Collect hearts to restore lost lives
+
+🪙 Grab coins to boost your score
+
+💔 Lose hearts when hit
+
+😵 Character face changes as you take damage
+
+💀 Game over when all lives are lost
+
+📱 Features
+Intuitive tilt or button control modes
+
+Real-time razor drop mechanics
+
+Animated beard reactions
+
+Sound effects and background music
+
+High score saving system (SharedPreferences)
+
+🛠️ Built With
+🧠 Kotlin
+
+🏗️ Android Studio
+
+🎨 Vector & PNG assets
+
+🔧 RelativeLayout 
