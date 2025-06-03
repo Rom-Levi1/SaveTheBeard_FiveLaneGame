@@ -36,13 +36,13 @@ High score saving system (SharedPreferences)
 
 🔧 RelativeLayout, LinearLayout, ScrollView
 
-<img src="screenshot0.png" width="45%"/>
-<img src="screenshot1.png" width="45%"/>
+<img src="Screenshot0.png" width="45%"/>
+<img src="Screenshot1.png" width="45%"/>
 
 <br/>
 
-<img src="screenshot2.png" width="45%"/>
-<img src="screenshot3.png" width="45%"/>
+<img src="Screenshot2.png" width="45%"/>
+<img src="Screenshot3.png" width="45%"/>
 
 
 
